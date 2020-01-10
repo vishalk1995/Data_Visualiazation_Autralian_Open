@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<script src="https://d3js.org/d3.v5.min.js"></script>
+		<script src="math.js"></script>
+		<script src="Chart.js"></script>
+		<script src="https://unpkg.com/d3-simple-slider"></script>
+		<script type="text/javascript" src="dataset.js"></script>
+		<script src="https://cdn.rawgit.com/Gmousse/dataframe-js/master/dist/dataframe.js">
+		</script>
+		<link rel="stylesheet" href="styling.css" charset="utf-8">
+		<link rel="stylesheet" href="./bootstrap-3.3.7-dist/css/bootstrap.min.css">
+		<title> DV Assignment2 </title>
+	</head>
+
+	<body>
+		<h1 class ="html_head">
+			WHAT MAKES A CHAMP!!
+		</h1>
+	    <div class="container-fluid h-100" > 
+			<div class="row">
+			<div id="slider_div">
+				<div class="slide_cen" class="col-xs-12 col-lg-12 col-md-12" id="slider-time"></div>   					
+			</div>
+
+			</div>
+	    	<div class="row"> 
+
+	    		<div class="col-md-7 col-lg-7"> 
+				    <p class="main_head">
+					  Average
+					  <span style="color: #FF2400; opacity:0.8; -webkit-text-stroke: 2px black;">First</span>
+					  and
+					  <span style="color: #7EF9FF; -webkit-text-stroke: 2px black;">Second</span> 
+					  Point Won(of Top 30 players)
+					</p>
+					<div class="svg-container"> 
+						<svg class ="chart svg-content" style = "position:relative;" viewBox="0 70 1100 550" preserveAspectRatio="xMinYMin meet"></svg>
+					</div>
+	    		</div>
+	    		<div class="col-md-5 col-lg-5"> 
+	    			<text class="r_head">
+	    				Performance of Top 4 based on average values
+	    			</text>	
+					<canvas class="canvas_class" id="r_chart" style = "position:relative; top: 150px; width:600px; height: 600px margin:0;">
+					</canvas>
+	    		</div>
+	    	</div>
+			<div class="row h-100">
+				<div class="col-md-3 col-lg-3">
+					<div class="player"> 
+							<div class="playerImage" id="player1"> 
+								</div>
+								<p class="pNames" id="p1_name" >
+								</p>	
+					</div>
+								
+	 			</div>	
+	    		<div class="col-md-3 col-lg-3"> 
+					<div class="player">
+							<div class="playerImage" id="player2"> 
+								</div>
+								<p class="pNames" id="p2_name" >
+								</p>
+					</div>
+	    		</div>
+	    		<div class="col-md-3 col-lg-3"> 
+					<div class="player"> 
+							<div class="playerImage" id="player3"> 
+								</div>
+								<p class="pNames" id="p3_name" >
+								</p>
+					</div>
+				</div>
+	    		<div class="col-md-3 col-lg-3"> 
+					<div class="player"> 
+							<div class="playerImage" id="player4"> 
+								</div>
+								<p class="pNames" id="p4_name" >
+								</p>
+					</div>
+				</div>
+			</div>
+			<div class="row"> 
+				<div id = "bottom_text_parent">
+					<div class="top_name" class="col-md-4 col-md-offset-4"> 
+						Top 4 players of the year
+					</div> 					
+				</div>
+			</div>
+
+	    </div>
+
+		<script type="text/javascript">
+			var year = 2009
+			var dataset = data.matches // complete dataset
+			DataFrame = dfjs.DataFrame
+			var data = new DataFrame(dataset, ["round","winner","results","year","gender","player1","player2","country1","country2","firstServe1%","firstServe2%","ace1","ace2","double1","double2","firstPointWon1%","firstPointWon2%","secPointWon1%","secPointWon2%","break1%","break2%","return1%","return2%","total1","total2","winner1","winner2","error1","error2","net1%","net2%"]) // complete dataset in form of a dataframe
+			var data_year = data.filter(row => row.get('year') == year)
+			var data_yrArray = data_year.toArray();
+
+
+			function first_secp_Graph(yr_data){
+				var player_name = [];
+				var avg_pw_table = []
+				var p_fpw = {};
+				var p_spw = {};
+				var top_p = [];
+				var top_large = 30;
+				var top_p_details = {};
+				var avg_top_p_details = {};
+
+				for (var i =0; i<data_yrArray.length; i++){
+					if(!(data_yrArray[i][5] in p_fpw)){
+						p_fpw[data_yrArray[i][5]] = new Array;
+						top_large = top_large - 1;
+					}
+					if(!(data_yrArray[i][5] in p_spw)){
+						p_spw[data_yrArray[i][5]] = new Array;
+					}
+					p_fpw[data_yrArray[i][5]].push([data_yrArray[i][15]])
+					p_spw[data_yrArray[i][5]].push([data_yrArray[i][17]])
+					
+					if (top_large == 0){
+						break;
+					}
+
+				}
+				for (key in p_fpw){
+					player_name.push(key)
+					var num_fp = math.mean(p_fpw[key]);
+					var num_sp = math.mean(p_spw[key]);
+					avg_pw_table.push({
+						"player":key,
+						"avg_fpw" : parseFloat(num_fp.toFixed(2)),
+						"avg_spw" : parseFloat(num_sp.toFixed(2))
+						});
+				}
+				top_p = player_name.slice(0,4);
+
+				for (player in top_p){
+					top_p_details[top_p[player]] = {};
+					top_p_details[top_p[player]]["firstServe1%"] = new Array;
+					top_p_details[top_p[player]]["firstPointWon1%"] = new Array;
+					top_p_details[top_p[player]]["secPointWon1%"] = new Array;
+					top_p_details[top_p[player]]["break1%"] = new Array;
+					top_p_details[top_p[player]]["return1%"] = new Array;
+					top_p_details[top_p[player]]["net1%"] = new Array;
+
+
+					for (var i2 = 0; i2<data_yrArray.length; i2++){
+						
+						if (data_yrArray[i2][5]==top_p[player]){
+
+							top_p_details[top_p[player]]["firstServe1%"].push([data_yrArray[i2][9]]);
+							top_p_details[top_p[player]]["firstPointWon1%"].push([data_yrArray[i2][15]]);
+							top_p_details[top_p[player]]["secPointWon1%"].push([data_yrArray[i2][17]]);
+							top_p_details[top_p[player]]["break1%"].push([data_yrArray[i2][19]]);
+							top_p_details[top_p[player]]["return1%"].push([data_yrArray[i2][21]]);
+							top_p_details[top_p[player]]["net1%"].push([data_yrArray[i2][29]]);
+						}
+					}
+					avg_top_p_details[top_p[player]] = {};
+					avg_top_p_details[top_p[player]]["firstServe1%"] = parseFloat(math.mean(top_p_details[top_p[player]]["firstServe1%"]).toFixed(2));
+					avg_top_p_details[top_p[player]]["firstPointWon1%"] = parseFloat(math.mean(top_p_details[top_p[player]]["firstPointWon1%"]).toFixed(2));
+					avg_top_p_details[top_p[player]]["secPointWon1%"] = parseFloat(math.mean(top_p_details[top_p[player]]["secPointWon1%"]).toFixed(2));
+					avg_top_p_details[top_p[player]]["break1%"] = parseFloat(math.mean(top_p_details[top_p[player]]["break1%"]).toFixed(2));
+					avg_top_p_details[top_p[player]]["return1%"] = parseFloat(math.mean(top_p_details[top_p[player]]["return1%"]).toFixed(2));
+					avg_top_p_details[top_p[player]]["net1%"] = parseFloat(math.mean(top_p_details[top_p[player]]["net1%"]).toFixed(2));
+				}
+				return [player_name, avg_pw_table, p_fpw, p_spw, top_p, top_p_details, avg_top_p_details];
+			}
+		</script>
+		<script type="text/javascript" src="all_graph.js"></script>
+		<script type="text/javascript">
+			var dataTime = d3.range(0, 11).map(function(d) {
+			    return new Date(2004 + d, 10, 3);
+			});
+			var sliderTime = d3
+				.sliderBottom()
+			    .min(d3.min(dataTime))
+			    .max(d3.max(dataTime))
+			    .step(1000 * 60 * 60 * 24 * 365)
+			    .width(1200)
+			    .tickFormat(d3.timeFormat('%Y'))
+			    .tickValues(dataTime)
+			    .default(new Date(2009, 10, 3))
+			    .on('onchange', val => {
+			      year = d3.timeFormat('%Y')(val); 
+			      data_year = data.filter(row => row.get('year') == year); 
+			      data_yrArray = data_year.toArray();
+			      
+				  const svg = d3.select('svg.chart');
+				  svg.selectAll("*").remove();
+				  top_radar.destroy();
+
+				  everything = first_secp_Graph(data_yrArray);
+				  player_name = everything[0];
+			      avg_pw_table = everything[1];
+				  p_fpw = everything[2];
+				  p_spw = everything[3];
+				  top_p = everything[4];
+				  top_p_details = everything[5];
+				  avg_top_p_details = everything[6];
+				
+				  scatter_graph(avg_pw_table, player_name);
+				  radar_graph(avg_top_p_details,top_p);
+				  display_player(top_p);
+			    });
+
+			var Time = d3
+				.select('div#slider-time')
+				.append('svg')
+			    .attr('width', 1300)
+			    .attr('height', 80)
+			    .append('g')
+			    .attr('transform', 'translate(30,30)');
+
+			Time.call(sliderTime);
+		</script>
+	</body>
+</html>
