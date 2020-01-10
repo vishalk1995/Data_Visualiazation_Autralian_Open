@@ -1,0 +1,140 @@
+html,body {
+   margin: 0px;
+   margin-top: 0%;
+   height: 100%;
+   width: 100%;
+   /* overflow-y: hidden; */
+}
+
+#slider_div {
+    text-align:center;
+}
+.slide_cen {
+    margin: 0 auto;
+}
+
+#bottom_text_parent {
+    text-align:center;
+}
+
+.player{
+	display: table;
+	margin: 0 auto;
+}
+.svg-container { 
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	vertical-align: middle; 
+	/* overflow: hidden;  */
+}
+.svg-content { 
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.container-fluid {
+    height: 100%;
+    /* overflow-y: hidden; */
+}
+
+.html_head{
+	margin: 0;
+	font-size:2.4em;
+	font-weight:bold;
+	font-style:italic;
+	color: black;
+    display: block;
+    text-align: center;
+    background: black;
+    color: white;
+}
+
+.main_head{
+	font-size:2.4em;
+	font-weight:bold;
+	font-style:italic;
+	margin:0;
+	margin-left:150px;
+}
+
+.r_head{
+	position: absolute;
+	font-style: italic;
+	color: black;
+	font-weight: bold;
+	top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -200%);
+	font-size: 2.4em;
+}
+
+
+.top_name{
+	font-size: 2em;
+	font-style: italic;
+	font-weight: bold;
+    margin: 0 auto;
+}
+
+
+.playerImage{
+	height: 80px;
+	width: 80px;
+	border-radius: 50%;
+	border: 2px solid black;
+	background-size: contain;
+
+}
+.pNames{
+	font-size:1.4em;
+	font-style: italic;
+	font-weight: bold;
+	font-family: sans-serif;
+	margin-left: -7%;
+	/* top: 50%; */
+    /* left: 50%; */
+    /* margin-right: -50%; */
+    /* transform: translate(-60%, -180%); */
+}
+
+circle.firstPW{
+	fill:#FF2400;
+	opacity:0.5;
+	stroke: black;
+	stroke-width: 2px;
+}
+
+circle.secondPW{
+	fill:#7EF9FF;
+	opacity:0.5;
+	stroke: black;
+	stroke-width: 2px;
+}
+
+text{
+	font-size:1.4em;
+	font-family: sans-serif;
+	font-style: italic;
+	font-weight: bold;
+}
+
+.tick text{
+	font-style: italic;
+	font-weight: bold;
+	fill: #635F5D;
+}
+
+.tick line{
+	stroke: gainsboro;
+}
+
+
+.xlabel{
+	font-size: 2em;
+	fill: #635F5D;
+	text-anchor: middle;
+}
